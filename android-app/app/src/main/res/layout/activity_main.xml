@@ -64,17 +64,17 @@
             android:id="@+id/navCameraButton"
             style="@style/Widget.PixelSheet.NavButton"
             android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1"
-            android:text="1  FOTOCAMERA" />
+            android:text="FOTO" />
         <com.google.android.material.button.MaterialButton
             android:id="@+id/navConvertButton"
             style="@style/Widget.PixelSheet.NavButton"
             android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1"
-            android:text="2  CONVERSIONE" />
+            android:text="CONVERTI" />
         <com.google.android.material.button.MaterialButton
             android:id="@+id/navResultButton"
             style="@style/Widget.PixelSheet.NavButton"
             android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1"
-            android:text="3  RISULTATO" />
+            android:text="RISULTATO" />
     </LinearLayout>
 
     <ViewFlipper
