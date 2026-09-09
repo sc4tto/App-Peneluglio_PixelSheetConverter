@@ -1,6 +1,8 @@
 package it.sc4tto.pixelsheetconverter
 
 import android.Manifest
+import android.content.ActivityNotFoundException
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -49,6 +51,7 @@ class MainActivity : AppCompatActivity() {
     private var watermarkedPreview: Bitmap? = null
     private var safeInsets: Insets = Insets.NONE
     private var previewContentWidth = 0
+    private var openSeaAfterPngSave = false
 
     private val cameraPermission = registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
         if (granted) startCamera() else status("Permesso fotocamera negato: puoi usare la galleria.")
@@ -57,7 +60,9 @@ class MainActivity : AppCompatActivity() {
         uri?.let { loadImage(it) }
     }
     private val pngCreator = registerForActivityResult(ActivityResultContracts.CreateDocument("image/png")) { uri ->
-        uri?.let { savePng(it) }
+        val shouldOpenOpenSea = openSeaAfterPngSave
+        openSeaAfterPngSave = false
+        if (uri != null && savePng(uri) && shouldOpenOpenSea) openOpenSeaInMetaMask()
     }
     private val xlsxCreator = registerForActivityResult(ActivityResultContracts.CreateDocument("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")) { uri ->
         uri?.let { saveXlsx(it) }
@@ -112,6 +117,11 @@ class MainActivity : AppCompatActivity() {
         binding.convertButton.setOnClickListener { convert() }
         binding.logoExportCheck.setOnCheckedChangeListener { _, _ -> updateResultPreview() }
         binding.exportPngButton.setOnClickListener { pngCreator.launch("pixel_sheet_${System.currentTimeMillis()}.png") }
+        binding.openSeaButton.setOnClickListener {
+            if (conversion == null) return@setOnClickListener status("Genera prima una conversione")
+            openSeaAfterPngSave = true
+            pngCreator.launch("pixel_sheet_${System.currentTimeMillis()}.png")
+        }
         binding.exportXlsxButton.setOnClickListener { xlsxCreator.launch("pixel_sheet_${System.currentTimeMillis()}.xlsx") }
         binding.backToCameraButton.setOnClickListener { showCamera() }
         binding.flashCheck.setOnCheckedChangeListener { _, checked ->
@@ -217,6 +227,7 @@ class MainActivity : AppCompatActivity() {
             resizeImagePreview(binding.sourcePreview, sourceBitmap!!.width, sourceBitmap!!.height)
             binding.statisticsText.text = "Immagine: ${sourceBitmap!!.width} × ${sourceBitmap!!.height} px\nScegli i parametri e premi Converti."
             binding.exportPngButton.isEnabled = false; binding.exportXlsxButton.isEnabled = false
+            binding.openSeaButton.isEnabled = false
             showScreen(1)
             status("Immagine acquisita")
         } catch (exc: Exception) { status("Errore immagine: ${exc.message}") }
@@ -262,6 +273,7 @@ class MainActivity : AppCompatActivity() {
                     resizeImagePreview(binding.resultPreview, result.width, result.height)
                     binding.statisticsText.text = report
                     binding.exportPngButton.isEnabled = true; binding.exportXlsxButton.isEnabled = true
+                    binding.openSeaButton.isEnabled = true
                     binding.convertButton.isEnabled = true
                     showScreen(2)
                     status("Conversione completata")
@@ -272,8 +284,8 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun savePng(uri: Uri) {
-        val result = conversion ?: return
+    private fun savePng(uri: Uri): Boolean {
+        val result = conversion ?: return false
         try {
             val exportedBitmap = if (binding.logoExportCheck.isChecked) {
                 WatermarkComposer.addLogo(this, result.bitmap)
@@ -285,7 +297,23 @@ class MainActivity : AppCompatActivity() {
             }
             if (exportedBitmap !== result.bitmap) exportedBitmap.recycle()
             toast("PNG salvato")
-        } catch (exc: Exception) { status("Errore PNG: ${exc.message}") }
+            return true
+        } catch (exc: Exception) {
+            status("Errore PNG: ${exc.message}")
+            return false
+        }
+    }
+
+    private fun openOpenSeaInMetaMask() {
+        val converterUrl = "https://courdemiracles-pixel-sheet.vercel.app/apps/pixel-sheet-converter/"
+        val metaMaskUrl = Uri.parse("https://link.metamask.io/dapp/courdemiracles-pixel-sheet.vercel.app/apps/pixel-sheet-converter/")
+        try {
+            startActivity(Intent(Intent.ACTION_VIEW, metaMaskUrl).setPackage("io.metamask"))
+            status("Apri il PNG appena salvato nel convertitore OpenSea")
+        } catch (_: ActivityNotFoundException) {
+            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(converterUrl)))
+            status("MetaMask non trovato: convertitore aperto nel browser")
+        }
     }
 
     private fun updateResultPreview() {
