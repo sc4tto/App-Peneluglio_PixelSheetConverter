@@ -45,3 +45,13 @@ jobs:
           files: PixelSheetConverter-Android-0.13.apk
           prerelease: true
           generate_release_notes: true
+      - name: Publish Android 0.13 release
+        uses: softprops/action-gh-release@v2
+        if: github.ref == 'refs/heads/main' && contains(github.event.head_commit.message, 'Release Android 0.13')
+        with:
+          tag_name: android-v0.13.0
+          target_commitish: ${{ github.sha }}
+          name: Pixel Sheet Converter Android 0.13
+          files: PixelSheetConverter-Android-0.13.apk
+          prerelease: true
+          generate_release_notes: true
