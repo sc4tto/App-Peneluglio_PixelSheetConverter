@@ -1,6 +1,6 @@
 # Pixel Sheet Converter per Android
 
-La build 0.10 adotta l'interfaccia **MSN Companion**: riprende la struttura della versione Windows e il linguaggio visivo di Windows Live Messenger, con superfici azzurro-vetro, riflessi bianchi, bolle trasparenti, pannelli ghiaccio sovrapposti e accenti verde lime. Il flusso è diviso in tre schermate — Fotocamera, Conversione e Risultato — raggiungibili dalla barra superiore e collegate da passaggi automatici.
+La build 0.11 adotta l'interfaccia **MSN Companion**: riprende la struttura della versione Windows e il linguaggio visivo di Windows Live Messenger, con superfici azzurro-vetro, riflessi bianchi, bolle trasparenti, pannelli ghiaccio sovrapposti e accenti verde lime. Il flusso è diviso in tre schermate — Fotocamera, Conversione e Risultato — raggiungibili dalla barra superiore e collegate da passaggi automatici.
 
 Il tema mantiene un'impostazione elegante e leggibile: le decorazioni rimangono a bassa opacità, i pannelli utilizzano doppi bordi luminosi e il verde MSN identifica selezione, anteprime e azioni principali senza dominare l'interfaccia.
 
@@ -29,6 +29,7 @@ La prima build Android è una versione di prova destinata inizialmente al Samsun
 - Calcolo delle dimensioni fisiche mediante passo pixel.
 - Statistiche RGB.
 - Esportazione PNG e XLSX con riempimenti statici.
+- Pubblicazione mobile su OpenSea: il comando **Pubblica su OpenSea** salva il PNG e apre il convertitore web nel browser MetaMask, dove il file può essere selezionato e pubblicato sulla rete Base.
 - Watermark opzionale nel PNG: composizione con due dodecaedri, ombra viola e segmenti neri, con sfondo esterno trasparente e facce interne bianche. Il logo viene disposto in basso a destra con dimensione e margine proporzionali all'immagine.
 
 ## Installazione sul Samsung Galaxy A36
@@ -39,6 +40,17 @@ La prima build Android è una versione di prova destinata inizialmente al Samsun
 4. Se richiesto, autorizzare **Archivio** in **Sicurezza e privacy > Altre impostazioni di sicurezza > Installa app sconosciute**.
 5. Se il Blocco automatico Samsung impedisce l'installazione, disattivarlo temporaneamente, installare e riattivarlo.
 6. Concedere il permesso Fotocamera al primo avvio.
+
+## Pubblicare una Pixel Sheet su OpenSea
+
+1. Installa MetaMask sul telefono e configura il wallet sulla rete Base.
+2. Scatta o importa un'immagine, genera la conversione e apri la schermata **Risultato**.
+3. Premi **Pubblica su OpenSea** e scegli dove salvare il PNG.
+4. L'app apre automaticamente il convertitore nel browser MetaMask; se MetaMask non è installato, apre il browser predefinito.
+5. Nel convertitore web premi **Apri immagine** e seleziona il PNG appena salvato.
+6. Genera l'anteprima, compila titolo e descrizione, quindi controlla e conferma separatamente preparazione e transazione.
+
+Il salvataggio del PNG e l'apertura del sito non creano una NFT e non consumano gas. La NFT viene creata soltanto dopo la conferma esplicita della transazione nel wallet.
 
 ## Firma e aggiornamenti
 

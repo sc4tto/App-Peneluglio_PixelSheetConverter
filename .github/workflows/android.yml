@@ -8,6 +8,10 @@ on:
       - ".github/workflows/android.yml"
     tags:
       - "android-v*"
+  pull_request:
+    paths:
+      - "android-app/**"
+      - ".github/workflows/android.yml"
   workflow_dispatch:
 
 permissions:

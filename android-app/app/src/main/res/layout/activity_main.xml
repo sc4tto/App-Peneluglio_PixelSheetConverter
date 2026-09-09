@@ -244,6 +244,21 @@
                     <com.google.android.material.button.MaterialButton android:id="@+id/exportXlsxButton" style="@style/Widget.PixelSheet.ActionButton" android:layout_width="0dp" android:layout_height="match_parent" android:layout_marginHorizontal="4dp" android:layout_weight="1" android:enabled="false" android:text="SALVA XLSX" />
                     <com.google.android.material.button.MaterialButton android:id="@+id/backToCameraButton" style="@style/Widget.PixelSheet.ActionButton" android:layout_width="0dp" android:layout_height="match_parent" android:layout_marginStart="4dp" android:layout_weight="1" android:text="NUOVO" />
                 </LinearLayout>
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/openSeaButton"
+                    style="@style/Widget.PixelSheet.PrimaryButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="52dp"
+                    android:layout_marginTop="8dp"
+                    android:enabled="false"
+                    android:text="PUBBLICA SU OPENSEA" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:text="Salva il PNG e apre il convertitore nel browser MetaMask. Seleziona quindi il file appena salvato e conferma sulla rete Base."
+                    android:textColor="@color/soft_muted"
+                    android:textSize="12sp" />
             </LinearLayout>
         </ScrollView>
     </ViewFlipper>
