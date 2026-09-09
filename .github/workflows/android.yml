@@ -34,14 +34,14 @@ jobs:
         working-directory: android-app
         run: gradle --no-daemon testDebugUnitTest assembleDebug
       - name: Prepare APK
-        run: cp android-app/app/build/outputs/apk/debug/app-debug.apk PixelSheetConverter-Android-test.apk
+        run: cp android-app/app/build/outputs/apk/debug/app-debug.apk PixelSheetConverter-Android-0.13.apk
       - uses: actions/upload-artifact@v4
         with:
-          name: PixelSheetConverter-Android-test
-          path: PixelSheetConverter-Android-test.apk
+          name: PixelSheetConverter-Android-0.13
+          path: PixelSheetConverter-Android-0.13.apk
       - uses: softprops/action-gh-release@v2
         if: startsWith(github.ref, 'refs/tags/android-v')
         with:
-          files: PixelSheetConverter-Android-test.apk
+          files: PixelSheetConverter-Android-0.13.apk
           prerelease: true
           generate_release_notes: true

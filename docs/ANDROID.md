@@ -1,6 +1,6 @@
 # Pixel Sheet Converter per Android
 
-La build 0.12 introduce un selettore grafico accessibile dal pulsante **Tema**. La scelta viene conservata sul telefono e ripristinata agli avvii successivi. Sono disponibili Windows 2000, XP Luna, Aero, KDE Keramik, KDE Oxygen, GNOME Clearlooks, Ubuntu Human, Terminale GNU/Linux e Flubber. Il flusso resta diviso in tre schermate — Fotocamera, Conversione e Risultato — raggiungibili dalla barra superiore e collegate da passaggi automatici.
+La build 0.13 introduce un selettore grafico accessibile dal pulsante **Tema**. La scelta viene conservata sul telefono e ripristinata agli avvii successivi. Sono disponibili Windows 2000, XP Luna, Aero, KDE Keramik, KDE Oxygen, GNOME Clearlooks, Ubuntu Human, Terminale GNU/Linux e Flubber. Dal medesimo menu si può inoltre importare un tema JSON creato nel Pixel Sheet Theme Studio dal browser. Il flusso resta diviso in tre schermate — Fotocamera, Conversione e Risultato — raggiungibili dalla barra superiore e collegate da passaggi automatici.
 
 I temi cambiano superfici, colori, bordi, profondità, tipografia e pulsanti senza modificare gli algoritmi, i file esportati o il flusso OpenSea. Windows 2000 è il tema iniziale per le nuove installazioni; il tema precedentemente scelto resta attivo dopo la chiusura dell'app.
 
@@ -19,6 +19,7 @@ La prima build Android è una versione di prova destinata inizialmente al Samsun
 ## Funzioni della build di prova
 
 - Nove temi selezionabili e persistenti: Windows 2000, XP Luna, Aero, KDE Keramik, KDE Oxygen, GNOME Clearlooks, Ubuntu Human, Terminale GNU/Linux e Flubber.
+- Importazione di temi personali `.json` esportati dal Pixel Sheet Theme Studio; il file viene verificato, applicato e conservato sul telefono.
 - Anteprima CameraX e scatto diretto.
 - Fotocamera posteriore o anteriore.
 - Anteprima fotografica immersiva a tutto schermo e griglia 3×3 attivabile.
@@ -43,6 +44,13 @@ La prima build Android è una versione di prova destinata inizialmente al Samsun
 4. Se richiesto, autorizzare **Archivio** in **Sicurezza e privacy > Altre impostazioni di sicurezza > Installa app sconosciute**.
 5. Se il Blocco automatico Samsung impedisce l'installazione, disattivarlo temporaneamente, installare e riattivarlo.
 6. Concedere il permesso Fotocamera al primo avvio.
+
+## Importare un tema personale
+
+1. Crea il tema nel Pixel Sheet Theme Studio dal computer e premi **Esporta JSON**.
+2. Copia il file `.json` nella cartella Download del telefono.
+3. Nell'app premi **Tema**, quindi **Importa tema JSON…**.
+4. Seleziona il file. Dopo la verifica, il tema viene applicato e rimane disponibile come tema personale.
 
 ## Pubblicare una Pixel Sheet su OpenSea
 

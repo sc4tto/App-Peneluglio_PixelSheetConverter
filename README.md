@@ -85,7 +85,7 @@ La conversione avviene interamente sul computer. Il programma non carica immagin
 
 ## Versione Android di prova
 
-Il progetto Android nativo si trova in `android-app`. Le funzioni e la procedura di installazione sul Samsung Galaxy A36 sono descritte in [`docs/ANDROID.md`](docs/ANDROID.md). La build 0.12 può aggiungere al PNG esportato il logo trasparente, avviare dal telefono il flusso di pubblicazione OpenSea tramite il browser MetaMask e cambiare l'aspetto dell'interfaccia tramite nove temi persistenti. La GitHub Action `Build Android APK` genera automaticamente un APK di collaudo installabile.
+Il progetto Android nativo si trova in `android-app`. Le funzioni e la procedura di installazione sul Samsung Galaxy A36 sono descritte in [`docs/ANDROID.md`](docs/ANDROID.md). La build 0.13 può aggiungere al PNG esportato il logo trasparente, avviare dal telefono il flusso di pubblicazione OpenSea tramite il browser MetaMask, cambiare l'aspetto dell'interfaccia tramite nove temi persistenti e importare i temi JSON creati nel Pixel Sheet Theme Studio. La GitHub Action `Build Android APK` genera automaticamente un APK di collaudo installabile.
 
 ## Documentazione tecnica
 

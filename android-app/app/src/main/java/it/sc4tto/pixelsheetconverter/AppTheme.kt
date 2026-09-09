@@ -21,6 +21,8 @@ data class AppTheme(
     val strokeDp: Int = 1,
     val elevationDp: Int = 3,
     val monospace: Boolean = false,
+    val iconSizeDp: Int = 20,
+    val iconGapDp: Int = 8,
 )
 
 object AppThemes {

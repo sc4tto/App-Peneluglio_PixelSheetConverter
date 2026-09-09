@@ -55,6 +55,7 @@ class MainActivity : AppCompatActivity() {
     private var openSeaAfterPngSave = false
     private val themePreferences by lazy { getSharedPreferences("appearance", MODE_PRIVATE) }
     private var currentTheme = AppThemes.all.first()
+    private var customTheme: AppTheme? = null
 
     private val cameraPermission = registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
         if (granted) startCamera() else status("Permesso fotocamera negato: puoi usare la galleria.")
@@ -70,13 +71,21 @@ class MainActivity : AppCompatActivity() {
     private val xlsxCreator = registerForActivityResult(ActivityResultContracts.CreateDocument("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")) { uri ->
         uri?.let { saveXlsx(it) }
     }
+    private val themePicker = registerForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->
+        uri?.let { importTheme(it) }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         WindowCompat.setDecorFitsSystemWindows(window, false)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        currentTheme = AppThemes.byId(themePreferences.getString("theme", null))
+        customTheme = themePreferences.getString("custom_theme", null)?.let { source ->
+            runCatching { ThemeJson.decode(source) }.getOrNull()
+        }
+        currentTheme = if (themePreferences.getString("theme", null) == "custom") {
+            customTheme ?: AppThemes.all.first()
+        } else AppThemes.byId(themePreferences.getString("theme", null))
         ThemeRenderer.apply(binding, currentTheme)
         ViewCompat.setOnApplyWindowInsetsListener(binding.rootLayout) { view, insets ->
             val safe = insets.getInsets(
@@ -159,12 +168,18 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun showThemeChooser() {
-        val labels = AppThemes.all.map { it.label }.toTypedArray()
-        val selected = AppThemes.all.indexOfFirst { it.id == currentTheme.id }.coerceAtLeast(0)
+        val themes = AppThemes.all + listOfNotNull(customTheme)
+        val labels = (themes.map { it.label } + "Importa tema JSON…").toTypedArray()
+        val selected = themes.indexOfFirst { it.id == currentTheme.id }.coerceAtLeast(0)
         AlertDialog.Builder(this)
             .setTitle("Tema dell’interfaccia")
             .setSingleChoiceItems(labels, selected) { dialog, position ->
-                currentTheme = AppThemes.all[position]
+                if (position == themes.size) {
+                    dialog.dismiss()
+                    themePicker.launch(arrayOf("application/json", "text/json", "text/plain"))
+                    return@setSingleChoiceItems
+                }
+                currentTheme = themes[position]
                 themePreferences.edit().putString("theme", currentTheme.id).apply()
                 ThemeRenderer.apply(binding, currentTheme)
                 updatePaletteSwatches()
@@ -173,6 +188,26 @@ class MainActivity : AppCompatActivity() {
             }
             .setNegativeButton("Annulla", null)
             .show()
+    }
+
+    private fun importTheme(uri: Uri) {
+        try {
+            val source = contentResolver.openInputStream(uri)?.bufferedReader()?.use { it.readText() }
+                ?: throw IllegalArgumentException("File vuoto")
+            val imported = ThemeJson.decode(source)
+            customTheme = imported
+            currentTheme = imported
+            themePreferences.edit()
+                .putString("custom_theme", source)
+                .putString("theme", "custom")
+                .apply()
+            ThemeRenderer.apply(binding, imported)
+            updatePaletteSwatches()
+            status("Tema importato: ${imported.label}")
+            toast("Tema applicato")
+        } catch (exc: Exception) {
+            status("Tema non importato: ${exc.message}")
+        }
     }
 
     private fun dp(value: Int): Int = (value * resources.displayMetrics.density).roundToInt()

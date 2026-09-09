@@ -4,12 +4,14 @@ import android.content.res.ColorStateList
 import android.graphics.Color
 import android.graphics.Typeface
 import android.graphics.drawable.GradientDrawable
+import android.graphics.drawable.LayerDrawable
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.Spinner
 import android.widget.TextView
 import androidx.core.view.ViewCompat
+import androidx.appcompat.content.res.AppCompatResources
 import com.google.android.material.button.MaterialButton
 import it.sc4tto.pixelsheetconverter.databinding.ActivityMainBinding
 
@@ -23,7 +25,7 @@ object ThemeRenderer {
         decorate(binding.navigationBar, theme.panelTop, theme.panelBottom, theme.border, 0)
         decorate(binding.statusText, theme.panelTop, theme.panelBottom, theme.border, 0)
         listOf(binding.dimensionsPanel, binding.colorsPanel, binding.statisticsPanel).forEach {
-            decorate(it, theme.panelTop, theme.panelBottom, theme.border, theme.radiusDp)
+            it.background = if (theme.id == "windows2000") classicBevel(it, theme.panelTop) else gradient(theme.panelTop, theme.panelBottom, theme.border, theme.radiusDp, it, 1)
             ViewCompat.setElevation(it, dp(it, theme.elevationDp).toFloat())
         }
         listOf(binding.sourcePreview, binding.resultPreview).forEach {
@@ -46,11 +48,20 @@ object ThemeRenderer {
         listOf(binding.navCameraButton, binding.navConvertButton, binding.navResultButton).forEach { styleButton(it, theme, false) }
         listOf(binding.convertButton, binding.openSeaButton).forEach { styleButton(it, theme, true) }
         listOf(binding.exportPngButton, binding.exportXlsxButton, binding.backToCameraButton).forEach { styleButton(it, theme, false) }
+        applyAlignedIcons(binding, theme)
 
         val face = if (theme.monospace) Typeface.MONOSPACE else Typeface.create("sans-serif", Typeface.NORMAL)
         setTypeface(binding.rootLayout, face)
         binding.themeButton.text = "TEMA"
         binding.themeButton.contentDescription = "Tema attivo: ${theme.label}. Tocca per cambiare tema."
+        if (theme.id == "windows2000") {
+            binding.appTitle.setTypeface(Typeface.create("sans-serif", Typeface.BOLD), Typeface.BOLD)
+            binding.appHeader.setPadding(dp(binding.appHeader, 7), dp(binding.appHeader, 4), dp(binding.appHeader, 5), dp(binding.appHeader, 4))
+            binding.navigationBar.setPadding(dp(binding.navigationBar, 4), dp(binding.navigationBar, 3), dp(binding.navigationBar, 4), dp(binding.navigationBar, 3))
+        } else {
+            binding.appHeader.setPadding(dp(binding.appHeader, 14), dp(binding.appHeader, 9), dp(binding.appHeader, 14), dp(binding.appHeader, 9))
+            binding.navigationBar.setPadding(dp(binding.navigationBar, 8), dp(binding.navigationBar, 4), dp(binding.navigationBar, 8), dp(binding.navigationBar, 4))
+        }
     }
 
     private fun styleTree(view: View, theme: AppTheme) {
@@ -76,9 +87,50 @@ object ThemeRenderer {
         val top = if (primary) theme.accent else theme.panelTop
         val bottom = if (primary) darken(theme.accent, 24) else theme.panelBottom
         button.backgroundTintList = null
-        button.background = gradient(top, bottom, theme.border, theme.radiusDp, button, theme.strokeDp)
+        button.background = if (theme.id == "windows2000") classicBevel(button, if (primary) theme.accent else theme.background)
+            else gradient(top, bottom, theme.border, theme.radiusDp, button, theme.strokeDp)
         button.setTextColor(if (primary) theme.accentText else theme.text)
         ViewCompat.setElevation(button, dp(button, if (primary) theme.elevationDp + 2 else theme.elevationDp).toFloat())
+    }
+
+    private fun applyAlignedIcons(binding: ActivityMainBinding, theme: AppTheme) {
+        val icons = listOf(
+            Triple(binding.themeButton, R.drawable.ic_theme_24, false),
+            Triple(binding.navCameraButton, R.drawable.ic_camera_24, true),
+            Triple(binding.navConvertButton, R.drawable.ic_tune_24, true),
+            Triple(binding.navResultButton, R.drawable.ic_image_24, true),
+            Triple(binding.galleryButton, R.drawable.ic_folder_24, false),
+            Triple(binding.captureButton, R.drawable.ic_camera_24, false),
+            Triple(binding.convertButton, R.drawable.ic_tune_24, false),
+            Triple(binding.exportPngButton, R.drawable.ic_image_24, false),
+            Triple(binding.exportXlsxButton, R.drawable.ic_grid_24, false),
+            Triple(binding.backToCameraButton, R.drawable.ic_camera_24, false),
+            Triple(binding.openSeaButton, R.drawable.ic_upload_24, false),
+        )
+        icons.forEach { (button, resource, compact) ->
+            button.icon = AppCompatResources.getDrawable(button.context, resource)
+            val iconColor = when (button) {
+                binding.convertButton, binding.openSeaButton -> theme.accentText
+                binding.galleryButton, binding.captureButton -> Color.WHITE
+                else -> theme.text
+            }
+            button.iconTint = ColorStateList.valueOf(iconColor)
+            button.iconGravity = MaterialButton.ICON_GRAVITY_TEXT_START
+            button.iconSize = dp(button, if (compact) (theme.iconSizeDp - 4).coerceAtLeast(14) else theme.iconSizeDp)
+            button.iconPadding = dp(button, if (compact) (theme.iconGapDp / 2).coerceAtLeast(2) else theme.iconGapDp)
+        }
+    }
+
+    private fun classicBevel(view: View, faceColor: Int): LayerDrawable {
+        val outer = GradientDrawable().apply { setColor(Color.rgb(64, 64, 64)) }
+        val highlight = GradientDrawable().apply { setColor(Color.WHITE) }
+        val shadow = GradientDrawable().apply { setColor(Color.rgb(128, 128, 128)) }
+        val face = GradientDrawable().apply { setColor(faceColor) }
+        return LayerDrawable(arrayOf(outer, highlight, shadow, face)).apply {
+            setLayerInset(1, 0, 0, dp(view, 2), dp(view, 2))
+            setLayerInset(2, dp(view, 1), dp(view, 1), dp(view, 1), dp(view, 1))
+            setLayerInset(3, dp(view, 2), dp(view, 2), dp(view, 2), dp(view, 2))
+        }
     }
 
     private fun decorate(view: View, top: Int, bottom: Int, border: Int, radius: Int) {
