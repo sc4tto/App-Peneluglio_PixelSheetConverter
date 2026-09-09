@@ -1,6 +1,7 @@
 package it.sc4tto.pixelsheetconverter
 
 import android.Manifest
+import android.app.AlertDialog
 import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -52,6 +53,8 @@ class MainActivity : AppCompatActivity() {
     private var safeInsets: Insets = Insets.NONE
     private var previewContentWidth = 0
     private var openSeaAfterPngSave = false
+    private val themePreferences by lazy { getSharedPreferences("appearance", MODE_PRIVATE) }
+    private var currentTheme = AppThemes.all.first()
 
     private val cameraPermission = registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
         if (granted) startCamera() else status("Permesso fotocamera negato: puoi usare la galleria.")
@@ -73,6 +76,8 @@ class MainActivity : AppCompatActivity() {
         WindowCompat.setDecorFitsSystemWindows(window, false)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        currentTheme = AppThemes.byId(themePreferences.getString("theme", null))
+        ThemeRenderer.apply(binding, currentTheme)
         ViewCompat.setOnApplyWindowInsetsListener(binding.rootLayout) { view, insets ->
             val safe = insets.getInsets(
                 WindowInsetsCompat.Type.systemBars() or WindowInsetsCompat.Type.displayCutout()
@@ -94,6 +99,8 @@ class MainActivity : AppCompatActivity() {
             override fun onNothingSelected(parent: AdapterView<*>?) = Unit
         }
         updatePaletteSwatches()
+
+        binding.themeButton.setOnClickListener { showThemeChooser() }
 
         binding.navCameraButton.setOnClickListener { showScreen(0) }
         binding.navConvertButton.setOnClickListener {
@@ -149,6 +156,23 @@ class MainActivity : AppCompatActivity() {
         override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) { if (fromUser) action(progress) }
         override fun onStartTrackingTouch(seekBar: SeekBar?) = Unit
         override fun onStopTrackingTouch(seekBar: SeekBar?) = Unit
+    }
+
+    private fun showThemeChooser() {
+        val labels = AppThemes.all.map { it.label }.toTypedArray()
+        val selected = AppThemes.all.indexOfFirst { it.id == currentTheme.id }.coerceAtLeast(0)
+        AlertDialog.Builder(this)
+            .setTitle("Tema dell’interfaccia")
+            .setSingleChoiceItems(labels, selected) { dialog, position ->
+                currentTheme = AppThemes.all[position]
+                themePreferences.edit().putString("theme", currentTheme.id).apply()
+                ThemeRenderer.apply(binding, currentTheme)
+                updatePaletteSwatches()
+                status("Tema: ${currentTheme.label}")
+                dialog.dismiss()
+            }
+            .setNegativeButton("Annulla", null)
+            .show()
     }
 
     private fun dp(value: Int): Int = (value * resources.displayMetrics.density).roundToInt()

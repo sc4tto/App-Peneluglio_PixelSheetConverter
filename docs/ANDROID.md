@@ -1,6 +1,8 @@
 # Pixel Sheet Converter per Android
 
-La build 0.11 adotta l'interfaccia **MSN Companion**: riprende la struttura della versione Windows e il linguaggio visivo di Windows Live Messenger, con superfici azzurro-vetro, riflessi bianchi, bolle trasparenti, pannelli ghiaccio sovrapposti e accenti verde lime. Il flusso è diviso in tre schermate — Fotocamera, Conversione e Risultato — raggiungibili dalla barra superiore e collegate da passaggi automatici.
+La build 0.12 introduce un selettore grafico accessibile dal pulsante **Tema**. La scelta viene conservata sul telefono e ripristinata agli avvii successivi. Sono disponibili Windows 2000, XP Luna, Aero, KDE Keramik, KDE Oxygen, GNOME Clearlooks, Ubuntu Human, Terminale GNU/Linux e Flubber. Il flusso resta diviso in tre schermate — Fotocamera, Conversione e Risultato — raggiungibili dalla barra superiore e collegate da passaggi automatici.
+
+I temi cambiano superfici, colori, bordi, profondità, tipografia e pulsanti senza modificare gli algoritmi, i file esportati o il flusso OpenSea. Windows 2000 è il tema iniziale per le nuove installazioni; il tema precedentemente scelto resta attivo dopo la chiusura dell'app.
 
 Il tema mantiene un'impostazione elegante e leggibile: le decorazioni rimangono a bassa opacità, i pannelli utilizzano doppi bordi luminosi e il verde MSN identifica selezione, anteprime e azioni principali senza dominare l'interfaccia.
 
@@ -16,6 +18,7 @@ La prima build Android è una versione di prova destinata inizialmente al Samsun
 
 ## Funzioni della build di prova
 
+- Nove temi selezionabili e persistenti: Windows 2000, XP Luna, Aero, KDE Keramik, KDE Oxygen, GNOME Clearlooks, Ubuntu Human, Terminale GNU/Linux e Flubber.
 - Anteprima CameraX e scatto diretto.
 - Fotocamera posteriore o anteriore.
 - Anteprima fotografica immersiva a tutto schermo e griglia 3×3 attivabile.

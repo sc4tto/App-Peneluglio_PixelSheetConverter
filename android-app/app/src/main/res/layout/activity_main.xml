@@ -9,6 +9,7 @@
 
     <LinearLayout
         android:id="@+id/appHeader"
+        android:tag="theme_header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/msn_header"
@@ -17,6 +18,7 @@
         android:paddingHorizontal="14dp"
         android:paddingVertical="9dp">
         <TextView
+            android:id="@+id/appTitle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -28,13 +30,21 @@
             app:autoSizeMinTextSize="14sp"
             app:autoSizeStepGranularity="1sp"
             app:autoSizeTextType="uniform" />
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/themeButton"
+            style="@style/Widget.PixelSheet.NavButton"
+            android:layout_width="88dp"
+            android:layout_height="38dp"
+            android:layout_marginEnd="6dp"
+            android:text="TEMA" />
         <TextView
+            android:id="@+id/versionLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/msn_toolbar"
             android:paddingHorizontal="7dp"
             android:paddingVertical="3dp"
-            android:text="ANDROID 0.10"
+            android:text="ANDROID 0.12"
             android:textColor="@color/classic_blue"
             android:textSize="10sp"
             android:textStyle="bold" />
@@ -42,6 +52,7 @@
 
     <LinearLayout
         android:id="@+id/navigationBar"
+        android:tag="theme_toolbar"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:background="@drawable/msn_toolbar"
@@ -175,16 +186,16 @@
 
         <!-- 2. CONVERSIONE -->
         <ScrollView android:layout_width="match_parent" android:layout_height="match_parent" android:fillViewport="true">
-            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="12dp">
-                <TextView style="@style/Widget.PixelSheet.SectionTitle" android:text="2. Impostazioni conversione" />
+            <LinearLayout android:id="@+id/conversionContent" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="12dp">
+                <TextView android:id="@+id/conversionTitle" style="@style/Widget.PixelSheet.SectionTitle" android:text="2. Impostazioni conversione" />
                 <ImageView
                     android:id="@+id/sourcePreview"
                     android:layout_width="match_parent" android:layout_height="230dp" android:layout_marginTop="8dp"
                     android:adjustViewBounds="true" android:background="@drawable/msn_preview_frame" android:contentDescription="Immagine originale"
                     android:padding="4dp" android:scaleType="fitCenter" />
 
-                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="10dp" android:background="@drawable/msn_panel" android:orientation="vertical" android:padding="12dp">
-                    <TextView style="@style/Widget.PixelSheet.PanelTitle" android:text="2.1 Dimensioni" />
+                <LinearLayout android:id="@+id/dimensionsPanel" android:tag="theme_panel" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="10dp" android:background="@drawable/msn_panel" android:orientation="vertical" android:padding="12dp">
+                    <TextView android:id="@+id/dimensionsTitle" style="@style/Widget.PixelSheet.PanelTitle" android:text="2.1 Dimensioni" />
                     <LinearLayout style="@style/Widget.PixelSheet.FieldRow">
                         <TextView style="@style/Widget.PixelSheet.FieldName" android:text="Larghezza in celle" />
                         <EditText android:id="@+id/widthInput" style="@style/Widget.PixelSheet.NumberInput" android:inputType="number" android:text="240" />
@@ -195,8 +206,8 @@
                     </LinearLayout>
                 </LinearLayout>
 
-                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="8dp" android:background="@drawable/msn_panel" android:orientation="vertical" android:padding="12dp">
-                    <TextView style="@style/Widget.PixelSheet.PanelTitle" android:text="2.2 Colori e dithering" />
+                <LinearLayout android:id="@+id/colorsPanel" android:tag="theme_panel" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="8dp" android:background="@drawable/msn_panel" android:orientation="vertical" android:padding="12dp">
+                    <TextView android:id="@+id/colorsTitle" style="@style/Widget.PixelSheet.PanelTitle" android:text="2.2 Colori e dithering" />
                     <TextView style="@style/Widget.PixelSheet.FieldLabel" android:layout_marginTop="8dp" android:text="Palette" />
                     <Spinner android:id="@+id/paletteSpinner" android:layout_width="match_parent" android:layout_height="48dp" android:background="@drawable/input_frame" />
                     <LinearLayout android:id="@+id/paletteSwatches" android:layout_width="match_parent" android:layout_height="24dp" android:layout_marginTop="6dp" android:orientation="horizontal" />
@@ -218,18 +229,18 @@
 
         <!-- 3. RISULTATO -->
         <ScrollView android:layout_width="match_parent" android:layout_height="match_parent" android:fillViewport="true">
-            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="12dp">
-                <TextView style="@style/Widget.PixelSheet.SectionTitle" android:text="3. Risultato ed esportazione" />
+            <LinearLayout android:id="@+id/resultContent" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="12dp">
+                <TextView android:id="@+id/resultTitle" style="@style/Widget.PixelSheet.SectionTitle" android:text="3. Risultato ed esportazione" />
                 <ImageView
                     android:id="@+id/resultPreview"
                     android:layout_width="match_parent" android:layout_height="250dp" android:layout_marginTop="8dp"
                     android:adjustViewBounds="true" android:background="@drawable/msn_preview_frame" android:contentDescription="Anteprima convertita"
                     android:padding="4dp" android:scaleType="fitCenter" />
-                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="10dp" android:background="@drawable/msn_panel" android:orientation="vertical" android:padding="12dp">
-                    <TextView style="@style/Widget.PixelSheet.PanelTitle" android:text="3.1 Statistiche e legenda" />
+                <LinearLayout android:id="@+id/statisticsPanel" android:tag="theme_panel" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="10dp" android:background="@drawable/msn_panel" android:orientation="vertical" android:padding="12dp">
+                    <TextView android:id="@+id/statisticsTitle" style="@style/Widget.PixelSheet.PanelTitle" android:text="3.1 Statistiche e legenda" />
                     <TextView android:id="@+id/statisticsText" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="8dp" android:text="Genera una conversione per visualizzare i risultati." android:textColor="@color/soft_text" android:textIsSelectable="true" android:textSize="14sp" />
                 </LinearLayout>
-                <TextView style="@style/Widget.PixelSheet.PanelTitle" android:layout_marginTop="12dp" android:text="3.2 Esportazione" />
+                <TextView android:id="@+id/exportTitle" style="@style/Widget.PixelSheet.PanelTitle" android:layout_marginTop="12dp" android:text="3.2 Esportazione" />
                 <CheckBox
                     android:id="@+id/logoExportCheck"
                     android:layout_width="match_parent"
@@ -253,6 +264,7 @@
                     android:enabled="false"
                     android:text="PUBBLICA SU OPENSEA" />
                 <TextView
+                    android:id="@+id/openSeaHelp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="6dp"
@@ -265,6 +277,7 @@
 
     <TextView
         android:id="@+id/statusText"
+        android:tag="theme_toolbar"
         android:layout_width="match_parent" android:layout_height="wrap_content"
         android:background="@drawable/msn_toolbar" android:maxLines="1"
         android:paddingHorizontal="12dp" android:paddingVertical="7dp"
